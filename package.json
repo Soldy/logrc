@@ -1,6 +1,6 @@
 {
   "name": "logrc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "simple json log writer.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "dependencies": {},
   "devDependencies": {
     "interactiveConsole": "^0.0.7-alpha0",
-    "nanoTest": "^0.9.9-beta1"
+    "nanoTest": "^0.9.9-beta8"
   },
   "keywords": [],
   "author": "Soldy <npmjs@gidigi.com> (http://gidigi.com)",
