@@ -58,6 +58,7 @@ eslint.sh
 
 .vuepress/dist
 .serverless/
+.github/
 
 .dynamodb/
 .fusebox/
