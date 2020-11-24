@@ -51,7 +51,7 @@ const logBase = function(logFileNameIn){
         writing = true;
         fs.appendFile(
             logFile,
-            line(),
+            lines(),
             function(){
                 writing = false;
                 if(logs.length > 0)
@@ -60,16 +60,31 @@ const logBase = function(logFileNameIn){
             }
         );
     };
+    /*
+     * / the next writeable log piece /
+     * @private
+     * @return {string}
+     */
     let line = function(){
         return JSON.stringify(
                 logs.shift()
             )+'\n';
-    }
+    };
+    /*
+     * / the next writeable log pieces /
+     * @private
+     * @return {string}
+     */
+    let lines = function(){
+        let out = "";
+        while (logs.length > 0)
+            out += line();
+        return out;
+    };
     /*
      * @param {JSONobject}
      * @private
      * @return {JSONobject}
-     *
      */
     let clean = function(object){
         return JSON.parse(
