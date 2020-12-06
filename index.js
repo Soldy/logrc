@@ -5,7 +5,7 @@ const fs = require('fs');
 
 
 const logBase = function(logFileNameIn){
-    /*
+    /* / log a new thing / 
      * @param {JSONobject}
      * @public
      * @return {boolean}
@@ -17,7 +17,7 @@ const logBase = function(logFileNameIn){
         });
         write();
     };
-    /*
+    /* / force the write if it can /
      * @public
      * @return {boolean}
      */
@@ -60,8 +60,7 @@ const logBase = function(logFileNameIn){
             }
         );
     };
-    /*
-     * / the next writeable log piece /
+    /* / the next writeable log piece /
      * @private
      * @return {string}
      */
@@ -70,8 +69,7 @@ const logBase = function(logFileNameIn){
                 logs.shift()
             )+'\n';
     };
-    /*
-     * / the next writeable log pieces /
+    /* / the next writeable log pieces /
      * @private
      * @return {string}
      */
@@ -81,7 +79,7 @@ const logBase = function(logFileNameIn){
             out += line();
         return out;
     };
-    /*
+    /* / clean the input object /
      * @param {JSONobject}
      * @private
      * @return {JSONobject}
