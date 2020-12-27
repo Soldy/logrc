@@ -66,15 +66,15 @@ const logBase = function(logFileNameIn){
      */
     let line = function(){
         return JSON.stringify(
-                logs.shift()
-            )+'\n';
+            logs.shift()
+        )+'\n';
     };
     /* / the next writeable log pieces /
      * @private
      * @return {string}
      */
     let lines = function(){
-        let out = "";
+        let out = '';
         while (logs.length > 0)
             out += line();
         return out;
@@ -86,7 +86,7 @@ const logBase = function(logFileNameIn){
      */
     let clean = function(object){
         return JSON.parse(
-            JSON.stringify(object).replace( /[\r\n]+/gm, "")
+            JSON.stringify(object).replace( /[\r\n]+/gm, '')
         );
     };
 };
