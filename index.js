@@ -1,9 +1,15 @@
 /*
- *  @Soldy\logrc\2020.11.24\GPL3
+ *  @Soldy\logrc\2021.01.16\GPL3
  */
+'use strict';
 const fs = require('fs');
 
 
+/*
+ * @param {string} logfileNameIn //name of log file
+ * @prototype
+ */
+ 
 const logBase = function(logFileNameIn){
     /* / log a new thing / 
      * @param {JSONobject}
