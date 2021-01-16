@@ -7,10 +7,10 @@ Simple JSON log.
 ```javascript
 
 new log = new (require('logrc')).logBase('some.log');
-log.log(
+log.log({
    process : 'something',
    message : 'something else'
-);
+});
 
 ```
 
