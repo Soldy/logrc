@@ -3,13 +3,13 @@
  */
 'use strict';
 const fs = require('fs');
+const readline = require('readline');
 
 
 /*
  * @param {string} logfileNameIn //name of log file
  * @prototype
  */
- 
 const logBase = function(logFileNameIn){
     /* / log a new thing / 
      * @param {JSONobject}
@@ -65,6 +65,28 @@ const logBase = function(logFileNameIn){
                 return true;
             }
         );
+    };
+    /*
+     * @param {string}
+     * @param {any}
+     * @private
+     * @return {boolean}
+     */
+    const read = async function(name, val){
+        let out = [];
+        const readInterface = readline.createInterface({
+            input: fs.createReadStream('.vimrc'),
+            output: false,
+            console: false
+        });
+        readInterface.on('line', function(line) {
+            out.push(
+                JSON.stringify(
+                    line
+                )
+            );
+        });
+        return out;
     };
     /* / the next writeable log piece /
      * @private
