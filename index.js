@@ -31,6 +31,21 @@ const logBase = function(logFileNameIn){
         return write();
     };
     /*
+     * @param {object}
+     * @public
+     * @return {array}
+     */
+    this.read = async function(filter){
+        return await read(filter);
+    };
+    /*
+     * @public
+     * @return {integer}
+     */
+    this.count = async function(){
+        return await count();
+    };
+    /*
      * @private
      * @var {boolean}
      */
@@ -49,7 +64,7 @@ const logBase = function(logFileNameIn){
      * @private
      * @return {boolean}
      */
-    let write = async function (){
+    const write = async function (){
         if(writing)
             return true;
         if(1 > logs.length)
@@ -67,32 +82,92 @@ const logBase = function(logFileNameIn){
         );
     };
     /*
-     * @param {string}
-     * @param {any}
+     * @param {readline.interface} rl
      * @private
-     * @return {boolean}
+     * @return {array}
      */
-    const read = async function(name, val){
+    const readerAll = async function (rl){
         let out = [];
-        const readInterface = readline.createInterface({
-            input: fs.createReadStream('.vimrc'),
-            output: false,
-            console: false
-        });
-        readInterface.on('line', function(line) {
+        for (let l of rl)
             out.push(
-                JSON.stringify(
-                    line
-                )
+                JSON.parse(l)
             );
+        return out;
+    }
+    /*
+     * @param {readline.interface} rl
+     * @param {object} filter
+     * @private
+     * @return {array}
+     */
+    const readerOffset = async function (
+        rl,
+        filter
+    ){
+        if (typeof filter.offset === 'undefined')
+            filter.offset = 0;
+        if (typeof filter.length === 'undefined')
+            filter.length = 0;
+        let out = [];
+        let position = 0;
+        let length = 0;
+        for (let l of rl){
+            if (
+               (position >= filter.offset) &&
+               (
+                   (filter.length === 0) ||
+                   (filter.length > length) 
+               )
+            ){
+                out.push(
+                    JSON.parse(l)
+                );
+                length++;
+                if (filter.length === length)
+                    return out;
+            }
+            position++;
+        }
+        return out;
+    }
+    /*
+     * @private
+     * @return {array}
+     */
+    const read = async function(filter){
+        const stream = fs.createReadStream(
+            logFile
+        );
+        const rl = readline.createInterface({
+            input: stream,
+            crlfDelay: Infinity
         });
+        if (typeof filter === 'undefined')
+            return await readerAll(rl);
+        return await readerFilter(rl, filter);
+    };
+    /*
+     * @private
+     * @return {intreger}
+     */
+    const count = async function(){
+        let out = 0;
+        const stream = fs.createReadStream(
+            logFile
+        );
+        const read = readline.createInterface({
+            input: stream,
+            crlfDelay: Infinity
+        });
+        for (let l of read)
+             out++;
         return out;
     };
     /* / the next writeable log piece /
      * @private
      * @return {string}
      */
-    let line = function(){
+    const line = function(){
         return JSON.stringify(
             logs.shift()
         )+'\n';
