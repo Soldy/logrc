@@ -1,5 +1,5 @@
 /*
- *  @Soldy\logrc\2021.01.16\GPL3
+ *  @Soldy\logrc\2021.02.10\GPL3
  */
 'use strict';
 const fs = require('fs');
@@ -10,7 +10,7 @@ const readline = require('readline');
  * @param {string} logfileNameIn //name of log file
  * @prototype
  */
-const logBase = function(logFileNameIn){
+const logrcBase = function(logFileNameIn){
     /* / log a new thing / 
      * @param {JSONobject}
      * @public
@@ -18,7 +18,7 @@ const logBase = function(logFileNameIn){
      */
     this.log = function(object){
         logs.push({
-            time : (+new Date),
+            time : Date.now(),
             data : clean(object)
         });
         write();
@@ -194,4 +194,4 @@ const logBase = function(logFileNameIn){
     };
 };
 
-exports.logBase = logBase;
+exports.base = logrcBase;
