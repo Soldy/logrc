@@ -2,14 +2,27 @@
 
 Simple JSON log.
 
+## install
+
+```bash
+npm i logrc
+
+```
+
+
 ## Usage
 
 ```javascript
 
-new log = new (require('logrc')).logBase('some.log');
+new log = new (require('logrc')).base('some.log');
 log.log({
    process : 'something',
-   message : 'something else'
+   message : 'some message'
+});
+
+log.log({
+   process : 'something',
+   message : 'other message'
 });
 
 ```

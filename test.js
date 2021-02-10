@@ -1,4 +1,4 @@
-const  log = new (require('./index.js')).logBase('test.log');
+const  log = new (require('./index.js')).base('test.log');
 log.log({
    process : 'huh',
    message : 'test :)'
