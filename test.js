@@ -1,4 +1,6 @@
-const  log = new (require('./index.js')).base('test.log');
+const  log = new (require('./index.js')).base({
+    'fileName':'test.log'
+});
 log.log({
    process : 'huh',
    message : 'test :)'

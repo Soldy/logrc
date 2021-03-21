@@ -4,14 +4,14 @@
 'use strict';
 const fs = require('fs');
 const readline = require('readline');
-const $setuprc = require('setuprc');
+const $setuprc = require('setuprc').base;
 
 
 /*
  * @param {string} logfileNameIn //name of log file
  * @prototype
  */
-const logrcBase = function(logFileNameIn){
+const logrcBase = function(settings){
     /* / log a new thing / 
      * @param {JSONobject}
      * @public
@@ -57,11 +57,6 @@ const logrcBase = function(logFileNameIn){
      */
     let _logs = [];
     /*
-     * @private
-     * @var {string}
-     */
-    let _logFile = logFileNameIn;
-    /*
      *  @private
      *  @const {object}
      */
@@ -71,6 +66,13 @@ const logrcBase = function(logFileNameIn){
             'default' : 'log.logrc'
         }
     };
+    /*
+     *  @private
+     *  @const {setuprc}
+     */
+    const _setup = new $setuprc(
+        _setup_json
+    );
     /*
      * @private
      * @return {boolean}
@@ -82,7 +84,7 @@ const logrcBase = function(logFileNameIn){
             return false;
         _writing = true;
         fs.appendFile(
-            _logFile,
+            _setup.get('fileName'),
             _lines(),
             function(){
                 _writing = false;
@@ -104,14 +106,14 @@ const logrcBase = function(logFileNameIn){
                 JSON.parse(l)
             );
         return out;
-    }
+    };
     /*
      * @param {readline.interface} rl
      * @param {object} filter
      * @private
      * @return {array}
      */
-    const readerOffset = async function (
+    const _readerOffset = async function (
         rl,
         filter
     ){
@@ -124,7 +126,7 @@ const logrcBase = function(logFileNameIn){
         let length = 0;
         for (let l of rl){
             if (
-               (position >= filter.offset) &&
+                (position >= filter.offset) &&
                (
                    (filter.length === 0) ||
                    (filter.length > length) 
@@ -140,14 +142,14 @@ const logrcBase = function(logFileNameIn){
             position++;
         }
         return out;
-    }
+    };
     /*
      * @private
      * @return {array}
      */
-    const read = async function(filter){
+    const _read = async function(filter){
         const stream = fs.createReadStream(
-            _logFile
+            _setup.get('fileName')
         );
         const rl = readline.createInterface({
             input: stream,
@@ -164,21 +166,21 @@ const logrcBase = function(logFileNameIn){
     const _count = async function(){
         let out = 0;
         const stream = fs.createReadStream(
-            _logFile
+            _setup.get('fileName')
         );
         const read = readline.createInterface({
             input: stream,
             crlfDelay: Infinity
         });
         for (let l of read)
-             out++;
+            out++;
         return out;
     };
     /* / the next writeable log piece /
      * @private
      * @return {string}
      */
-    const line = function(){
+    const _line = function(){
         return JSON.stringify(
             _logs.shift()
         )+'\n';
@@ -189,7 +191,7 @@ const logrcBase = function(logFileNameIn){
      */
     let _lines = function(){
         let out = '';
-        while (_logs.length > 0)
+        while ( _logs.length > 0 )
             out += _line();
         return out;
     };
@@ -203,6 +205,8 @@ const logrcBase = function(logFileNameIn){
             JSON.stringify(object).replace( /[\r\n]+/gm, '')
         );
     };
+    if ( typeof settings === 'undefined' )
+        _setup.setup(settings);
 };
 
 exports.base = logrcBase;
