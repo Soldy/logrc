@@ -205,7 +205,7 @@ const logrcBase = function(settings){
             JSON.stringify(object).replace( /[\r\n]+/gm, '')
         );
     };
-    if ( typeof settings === 'undefined' )
+    if ( typeof settings !== 'undefined' )
         _setup.setup(settings);
 };
 

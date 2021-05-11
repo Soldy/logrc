@@ -1,6 +1,6 @@
 {
   "name": "logrc",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "simple json log writer.",
   "main": "index.js",
   "scripts": {
