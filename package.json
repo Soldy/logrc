@@ -1,6 +1,6 @@
 {
   "name": "logrc",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "simple json log writer.",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,9 @@
     "type": "git",
     "url": "https://github.com/Soldy/logrc"
   },
-  "dependencies": {},
+  "dependencies": {
+    "setuprc": "^0.9.9-beta19"
+  },
   "devDependencies": {
     "nanoTest": "^0.9.9-beta17b"
   },
