@@ -28,8 +28,8 @@ const logrcBase = function(settings){
      * @public
      * @return {boolean}
      */
-    this.write = function(){
-        return _write();
+    this.write = async function(){
+        return await _write();
     };
     /*
      * @param {object}
@@ -51,6 +51,11 @@ const logrcBase = function(settings){
      * @var {boolean}
      */
     let _writing = false;
+    /*
+     * @private
+     * @var {boolean}
+     */
+    let _reading = false;
     /*
      * @private
      * @var {array}
@@ -78,8 +83,13 @@ const logrcBase = function(settings){
      * @return {boolean}
      */
     const _write = async function (){
-        if(_writing)
+        if(_writing || _reading){
+            setTimeout(
+                _write,
+                200
+            );
             return true;
+        }
         if(1 > _logs.length)
             return false;
         _writing = true;
@@ -105,6 +115,7 @@ const logrcBase = function(settings){
             out.push(
                 JSON.parse(l)
             );
+        _reading = false;
         return out;
     };
     /*
@@ -144,15 +155,18 @@ const logrcBase = function(settings){
         return out;
     };
     /*
+     * @param {string}
      * @private
      * @return {array}
      */
     const _read = async function(filter){
-        const stream = fs.createReadStream(
-            _setup.get('fileName')
-        );
+        if(_reading)
+            return "";
+        _reading = true;
         const rl = readline.createInterface({
-            input: stream,
+            input: fs.createReadStream(
+                _setup.get('fileName')
+            ),
             crlfDelay: Infinity
         });
         if (typeof filter === 'undefined')
