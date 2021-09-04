@@ -5,6 +5,7 @@
 const fs = require('fs');
 const readline = require('readline');
 const $setuprc = require('setuprc').base;
+const _format = '.jlog';
 
 
 /*
@@ -124,7 +125,7 @@ const logrcBase = function(settings){
      * @private
      * @return {array}
      */
-    const _readerOffset = async function (
+    const _readerFilter = async function (
         rl,
         filter
     ){
@@ -161,7 +162,7 @@ const logrcBase = function(settings){
      */
     const _read = async function(filter){
         if(_reading)
-            return "";
+            return '';
         _reading = true;
         const rl = readline.createInterface({
             input: fs.createReadStream(
@@ -186,7 +187,7 @@ const logrcBase = function(settings){
             input: stream,
             crlfDelay: Infinity
         });
-        for (let l of read)
+        for (let l in read)
             out++;
         return out;
     };
@@ -223,4 +224,38 @@ const logrcBase = function(settings){
         _setup.setup(settings);
 };
 
+const stamped = function(dir,file){
+    let outfile = (
+        dir+
+        '/'+
+        file+
+        '.'+
+        Math.round(Date.now()/1000).toString()+
+        _format
+    
+    );
+    return new logrcBase(outfile);
+};
+const dated = function(dir,file){
+    let date = new Date();
+    let formated = (
+        date.getFullYear().toString()+
+        date.getMonth().toString().padStart(2, '0')+
+        date.getDate().toString().padStart(2, '0')
+    );
+    let outfile = (
+        dir+
+        '/'+
+        file+
+        '.'+
+        formated+
+        _format
+    );
+    return new logrcBase(outfile);
+};
+
+
 exports.base = logrcBase;
+exports.stamped = stamped;
+exports.dated = dated;
+
