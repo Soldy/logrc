@@ -25,6 +25,13 @@ const logrcBase = function(settings){
         });
         _write();
     };
+    /* / force async write */
+     * @public
+     * @return {boolean}
+     */
+    this.writeSync = function(){
+        return _writeSync();
+    };
     /* / force the write if it can /
      * @public
      * @return {boolean}
@@ -47,6 +54,11 @@ const logrcBase = function(settings){
     this.count = async function(){
         return await _count();
     };
+    /*
+     * @private
+     * @var {boolean}
+     */
+    let _async_write_block = false;
     /*
      * @private
      * @var {boolean}
@@ -83,7 +95,21 @@ const logrcBase = function(settings){
      * @private
      * @return {boolean}
      */
+    const _writeSync = async function (){
+        if(_writing || _reading)
+            throw Error('log file already open');
+        fs.appendFileSync(
+            _setup.get('fileName'),
+            _lines()
+        );
+    };
+    /*
+     * @private
+     * @return {boolean}
+     */
     const _write = async function (){
+        if(_async_write_block)
+            return false;
         if(_writing || _reading){
             setTimeout(
                 _write,
