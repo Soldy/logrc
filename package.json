@@ -11,10 +11,10 @@
     "url": "https://github.com/Soldy/logrc"
   },
   "dependencies": {
-    "setuprc": "^0.9.9-beta19"
+    "setuprc": "^0.9.9-beta20"
   },
   "devDependencies": {
-    "nanoTest": "^0.9.9-beta22"
+    "nanoTest": "^0.9.9-beta31"
   },
   "keywords": [],
   "author": "Soldy <npmjs@gidigi.com> (http://gidigi.com)",
