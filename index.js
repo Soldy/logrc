@@ -25,7 +25,7 @@ const logrcBase = function(settings){
         });
         _write();
     };
-    /* / force async write */
+    /* / force async write 
      * @public
      * @return {boolean}
      */
@@ -258,10 +258,10 @@ const stamped = function(dir,file){
         '.'+
         Math.round(Date.now()/1000).toString()+
         _format
-    
     );
     return new logrcBase(outfile);
 };
+
 const dated = function(dir,file){
     let date = new Date();
     let formated = (
